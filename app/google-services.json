@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "632517558106",
+    "firebase_url": "https://cafechat-bba81.firebaseio.com",
+    "project_id": "cafechat-bba81",
+    "storage_bucket": "cafechat-bba81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632517558106:android:f58c598b1e74fd37",
+        "android_client_info": {
+          "package_name": "thachtv.cafechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632517558106-l57bsfe8tm5r1k4sgut37699c5gan6ri.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "thachtv.cafechat",
+            "certificate_hash": "0b5ee02ae185ff5cb76ff5e5f29f8fc06f6ede4e"
+          }
+        },
+        {
+          "client_id": "632517558106-slov176hru6mur2ju0j4rakdse1olv0d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv4hcLPEwBJNS-srKd1a309KZxGEecNjE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632517558106-slov176hru6mur2ju0j4rakdse1olv0d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

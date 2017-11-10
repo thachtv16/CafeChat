@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout_message"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_55">
+
+        <include layout="@layout/layout_action_bar_message"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_layout"
+        android:layout_below="@+id/app_bar_layout_message"
+        android:layout_above="@+id/rl_send_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_message"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorSmoke"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <View
+        android:layout_above="@+id/rl_send_message"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_2"
+        android:background="@color/colorPrimary"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_send_message"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_50">
+
+        <!--<ImageView
+            android:id="@+id/iv_camera_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_camera_message"/>-->
+
+        <ImageView
+            android:id="@+id/iv_plus_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plus_message" />
+
+        <EditText
+            android:id="@+id/et_text_message"
+            android:layout_toRightOf="@+id/iv_plus_message"
+            android:layout_toLeftOf="@+id/iv_send_message"
+            android:hint="Enter your message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/iv_send_message"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_send_message"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

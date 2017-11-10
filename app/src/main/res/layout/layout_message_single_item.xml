@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/dimen_size_10"
+    android:paddingRight="@dimen/dimen_size_10">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_image_message"
+        android:layout_width="@dimen/dimen_size_60"
+        android:layout_height="@dimen/dimen_size_60"
+        android:src="@drawable/person_image"/>
+
+    <TextView
+        android:id="@+id/tv_text_message"
+        android:layout_toRightOf="@+id/civ_image_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Text View"
+        android:background="@drawable/message_text_background_white"
+        android:textSize="@dimen/text_size_normal"
+        android:padding="@dimen/dimen_size_5"
+        android:layout_marginTop="@dimen/dimen_size_5"
+        android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+    <TextView
+        android:id="@+id/tv_time_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:layout_toRightOf="@+id/civ_image_message"
+        android:layout_below="@+id/tv_text_message"
+        android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+    <TextView
+        android:id="@+id/tv_text_main_message"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Text View"
+        android:background="@drawable/message_text_background_primary"
+        android:textSize="@dimen/text_size_normal"
+        android:padding="@dimen/dimen_size_5"
+        android:layout_marginTop="@dimen/dimen_size_5"
+        android:layout_marginRight="@dimen/dimen_size_10"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/tv_time_main_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_text_main_message"
+        android:layout_marginRight="@dimen/dimen_size_10"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

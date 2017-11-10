@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorSmoke">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout_privacy"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_50">
+
+        <include layout="@layout/layout_action_bar_extra" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_email_privacy"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_60"
+        android:layout_below="@+id/app_bar_layout_privacy"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_size_10"
+            android:text="Email display"
+            android:textSize="@dimen/text_size_normal" />
+
+        <CheckBox
+            android:id="@+id/cb_email_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_size_20"
+            android:button="@drawable/checked" />
+
+        <!--<ImageView
+            android:id="@+id/iv_email_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/if_radio_unchecked"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dimen_size_20"/>-->
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_one_privacy"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_1"
+        android:layout_below="@+id/rl_email_privacy"
+        android:layout_marginLeft="@dimen/dimen_size_10"
+        android:background="@color/colorPrimary" />
+
+    <RelativeLayout
+        android:id="@+id/rl_phone_privacy"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_60"
+        android:layout_below="@+id/view_one_privacy"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Phone display"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+        <CheckBox
+            android:id="@+id/cb_phone_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_size_20"
+            android:button="@drawable/checked" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_two_privacy"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_1"
+        android:layout_below="@+id/rl_phone_privacy"
+        android:layout_marginLeft="@dimen/dimen_size_10"
+        android:background="@color/colorPrimary" />
+
+    <RelativeLayout
+        android:id="@+id/rl_gender_privacy"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_60"
+        android:layout_below="@+id/view_two_privacy"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Gender display"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+        <CheckBox
+            android:id="@+id/cb_gender_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_size_20"
+            android:button="@drawable/checked" />
+    </RelativeLayout>
+
+</RelativeLayout>

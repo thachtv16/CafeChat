@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout_profile"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_50">
+
+        <include layout="@layout/layout_action_bar_extra"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ImageView
+        android:id="@+id/iv_image_background_profile"
+        android:layout_below="@+id/app_bar_layout_profile"
+        android:src="@color/colorSmoke"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_200" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_image_avatar_profile"
+        android:layout_width="@dimen/dimen_size_80"
+        android:layout_height="@dimen/dimen_size_80"
+        android:layout_marginTop="@dimen/dimen_size_150"
+        android:layout_marginLeft="@dimen/dimen_size_10"
+        android:src="@drawable/person_image"/>
+
+    <TextView
+        android:id="@+id/tv_user_name_profile"
+        android:layout_toRightOf="@+id/civ_image_avatar_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_size_10"
+        android:layout_marginTop="@dimen/dimen_size_170"
+        android:text="@string/user_name"
+        android:textSize="@dimen/text_size_normal"
+        android:textColor="@color/colorWhite"
+        android:layout_centerHorizontal="true"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_email_profile"
+        android:layout_below="@+id/iv_image_background_profile"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_50">
+
+        <TextView
+            android:id="@+id/tv_email_title_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+        <TextView
+            android:id="@+id/tv_email_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nothing"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_size_100"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_one_profile"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_1"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/rl_email_profile"
+        android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_phone_profile"
+        android:layout_below="@+id/view_one_profile"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_50">
+
+        <TextView
+            android:id="@+id/tv_phone_title_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+        <TextView
+            android:id="@+id/tv_phone_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nothing"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_size_100"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_two_profile"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_1"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/rl_phone_profile"
+        android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_gender_profile"
+        android:layout_below="@+id/view_two_profile"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_50">
+
+        <TextView
+            android:id="@+id/tv_gender_title_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+        <TextView
+            android:id="@+id/tv_gender_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_size_100"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_send_friend_request"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen_size_100"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:text="Send Friend Request"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/ripple_button_log_in"/>
+
+    <Button
+        android:id="@+id/btn_decline_friend_request"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dimen_size_40"
+        android:layout_centerHorizontal="true"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:text="Decline Friend Request"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/ripple_button_log_in"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

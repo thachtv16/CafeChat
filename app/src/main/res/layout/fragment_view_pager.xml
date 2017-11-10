@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_100">
+
+        <include layout="@layout/layout_action_bar_main"/>
+
+        <LinearLayout
+            android:layout_below="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_size_50"
+            android:orientation="horizontal"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/iv_chat_main"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_chat_unselected"
+                android:background="@drawable/ripple_tab"/>
+
+            <ImageView
+                android:id="@+id/iv_contact_main"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_contact_unselected"
+                android:background="@drawable/ripple_tab"/>
+
+            <ImageView
+                android:id="@+id/iv_information_main"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_information_unselected"
+                android:background="@drawable/ripple_tab"/>
+
+        </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_marginTop="@dimen/dimen_size_100"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

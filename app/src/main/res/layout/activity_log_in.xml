@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:fitsSystemWindows="true"
+    tools:context="thachtv.cafechat.activities.LogInActivity">
+
+    <ImageView
+        android:id="@+id/iv_splash_log_in"
+        android:layout_width="@dimen/dimen_size_100"
+        android:layout_height="@dimen/dimen_size_100"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:src="@drawable/splash_login" />
+
+    <Button
+        android:id="@+id/btn_log_in_facebook"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_splash_log_in"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_size_20"
+        android:text="@string/login_with_facebook"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/ripple_button_facebook"/>
+
+    <Button
+        android:id="@+id/btn_log_in_google"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_log_in_facebook"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:text="@string/login_with_google"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/ripple_button_google"/>
+
+    <TextView
+        android:id="@+id/tv_none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_log_in_google"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen_size_10"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:text="@string/or_login_with_email"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_min" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/met_log_in_email"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_none"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/hint_login_text_mail"
+        android:inputType="textEmailAddress"
+        android:textColorHint="@color/colorPrimary"
+        app:met_baseColor="@color/colorPrimary"
+        app:met_floatingLabel="highlight"
+        app:met_floatingLabelText="@string/label_text_mail"
+        app:met_primaryColor="@color/colorPrimary"
+        app:met_singleLineEllipsis="true"
+        app:met_textColorHint="@color/colorPrimary" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/met_log_in_password"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/met_log_in_email"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/hint_login_text_pass"
+        android:inputType="textPassword"
+        android:textColorHint="@color/colorPrimary"
+        app:met_baseColor="@color/colorPrimary"
+        app:met_errorColor="@color/colorAccent"
+        app:met_floatingLabel="highlight"
+        app:met_floatingLabelText="@string/label_text_pass"
+        app:met_primaryColor="@color/colorPrimary"
+        app:met_singleLineEllipsis="true"
+        app:met_textColorHint="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/btn_log_in_email"
+        android:layout_below="@+id/met_log_in_password"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login_with_mail"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/ripple_button_log_in"/>
+
+    <TextView
+        android:id="@+id/tv_forgot_password"
+        android:layout_below="@+id/btn_log_in_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forgot_password"
+        android:textSize="@dimen/text_size_min"
+        android:textColor="@color/colorPrimary"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_size_10"/>
+
+    <TextView
+        android:id="@+id/tv_sign_in_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in_with_mail"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_normal"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/dimen_size_10"
+        android:layout_marginBottom="@dimen/dimen_size_10"/>
+
+    <ProgressBar
+        android:id="@+id/pb_content"
+        android:layout_width="@dimen/dimen_size_60"
+        android:layout_height="@dimen/dimen_size_60"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"/>
+
+
+</RelativeLayout>
+

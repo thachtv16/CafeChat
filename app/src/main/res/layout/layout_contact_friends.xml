@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/rl_contact_friends">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_image_contact_friends"
+        android:layout_width="@dimen/dimen_size_60"
+        android:layout_height="@dimen/dimen_size_60"
+        android:src="@drawable/person_image"
+        android:padding="@dimen/dimen_size_10"/>
+
+    <ImageView
+        android:id="@+id/iv_dot_online_contact_friends"
+        android:layout_width="@dimen/dimen_size_10"
+        android:layout_height="@dimen/dimen_size_10"
+        android:src="@drawable/ic_dot_online"
+        android:layout_marginTop="@dimen/dimen_size_40"
+        android:layout_marginLeft="@dimen/dimen_size_40"/>
+
+    <TextView
+        android:id="@+id/tv_contact_friends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/civ_image_contact_friends"
+        android:layout_marginLeft="@dimen/dimen_size_10"
+        android:text="@string/user_name"
+        android:textSize="@dimen/text_size_normal"/>
+
+    <TextView
+        android:id="@+id/tv_date_time_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/civ_image_contact_friends"
+        android:layout_below="@+id/tv_contact_friends"
+        android:layout_marginLeft="@dimen/dimen_size_10"
+        android:text="@string/date_time"
+        android:textSize="@dimen/text_size_min"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_1"
+        android:layout_marginTop="@dimen/dimen_size_60"
+        android:layout_marginLeft="@dimen/dimen_size_60"
+        android:background="@color/colorPrimary"/>
+
+</RelativeLayout>

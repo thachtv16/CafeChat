@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:fitsSystemWindows="true"
+    tools:context="thachtv.cafechat.activities.RegisterActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_45">
+
+        <include layout="@layout/layout_action_bar_extra"/>
+    </android.support.design.widget.AppBarLayout>
+
+
+    <TextView
+        android:id="@+id/tv_cafe_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cafe_chat"
+        android:textSize="@dimen/text_size_max"
+        android:textColor="@color/colorPrimary"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_size_100"/>
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/met_register_user_name"
+        android:layout_below="@+id/tv_cafe_chat"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:hint="@string/hint_sign_in_user_name"
+        android:layout_centerHorizontal="true"
+        app:met_textColorHint="@color/colorPrimary"
+        app:met_baseColor="@color/colorPrimary"
+        app:met_singleLineEllipsis="true"/>
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/met_register_email"
+        android:layout_below="@+id/met_register_user_name"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_sign_in_email"
+        android:layout_centerHorizontal="true"
+        app:met_textColorHint="@color/colorPrimary"
+        app:met_baseColor="@color/colorPrimary"
+        app:met_singleLineEllipsis="true"/>
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/met_register_password"
+        android:layout_below="@+id/met_register_email"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_sign_in_pass"
+        android:inputType="textPassword"
+        android:layout_centerHorizontal="true"
+        app:met_textColorHint="@color/colorPrimary"
+        app:met_baseColor="@color/colorPrimary"
+        app:met_singleLineEllipsis="true"/>
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/met_register_password_again"
+        android:layout_below="@+id/met_register_password"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_sign_in_pass_again"
+        android:inputType="textPassword"
+        android:layout_centerHorizontal="true"
+        app:met_textColorHint="@color/colorPrimary"
+        app:met_baseColor="@color/colorPrimary"
+        app:met_singleLineEllipsis="true"/>
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_below="@+id/met_register_password_again"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_size_20"
+        android:text="@string/register"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/ripple_button_log_in"/>
+
+    <ProgressBar
+        android:id="@+id/pb_content_register"
+        android:layout_width="@dimen/dimen_size_60"
+        android:layout_height="@dimen/dimen_size_60"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

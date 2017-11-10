@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorSmoke"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_image_background"
+        android:src="@color/colorSmoke"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_200" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_image_avatar"
+        android:layout_width="@dimen/dimen_size_80"
+        android:layout_height="@dimen/dimen_size_80"
+        android:layout_marginTop="@dimen/dimen_size_100"
+        android:layout_marginLeft="@dimen/dimen_size_10"
+        android:src="@drawable/person_image"/>
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_toRightOf="@+id/civ_image_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_size_10"
+        android:layout_marginTop="@dimen/dimen_size_120"
+        android:text="@string/user_name"
+        android:textSize="@dimen/text_size_normal"
+        android:textColor="@color/colorWhite"
+        android:layout_centerHorizontal="true"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_email_information"
+        android:layout_below="@+id/iv_image_background"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_50">
+
+        <TextView
+            android:id="@+id/tv_email_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+        <TextView
+            android:id="@+id/tv_email_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nothing"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_size_100"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_one_information"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_1"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/rl_email_information"
+        android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_phone_information"
+        android:layout_below="@+id/view_one_information"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_50">
+
+        <TextView
+            android:id="@+id/tv_phone_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+        <TextView
+            android:id="@+id/tv_phone_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nothing"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_size_100"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_two_information"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_1"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/rl_phone_information"
+        android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_gender_information"
+        android:layout_below="@+id/view_two_information"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_50">
+
+        <TextView
+            android:id="@+id/tv_gender_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_size_10"/>
+
+        <TextView
+            android:id="@+id/tv_gender_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_size_100"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_update_information"
+        android:layout_below="@+id/rl_gender_information"
+        android:layout_marginTop="@dimen/dimen_size_20"
+        android:layout_centerHorizontal="true"
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:text="@string/update_information"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/ripple_button_log_in"/>
+
+    <ProgressBar
+        android:id="@+id/pb_content_information"
+        android:layout_width="@dimen/dimen_size_60"
+        android:layout_height="@dimen/dimen_size_60"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

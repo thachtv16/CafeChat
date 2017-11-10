@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">CafeChat</string>
+
+    <string name="cafe_chat"> Cafe Chat</string>
+    <string name="title_action_bar_single">Title</string>
+
+    <string name="facebook_app_id">175597493003189</string>
+
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="login_with_mail">Login</string>
+    <string name="sign_in_with_mail">Sign In</string>
+    <string name="or_login_with_email">or login with email</string>
+    <string name="forgot_password">Forgot password?</string>
+
+    <string name="label_text_mail">Email</string>
+    <string name="label_text_pass">Password</string>
+    <string name="hint_login_text_mail">Email</string>
+    <string name="hint_login_text_pass">Password</string>
+
+    <string name="hint_sign_in_user_name">User name</string>
+    <string name="hint_sign_in_pass">Password</string>
+    <string name="hint_sign_in_pass_again">Re-enter password</string>
+    <string name="hint_sign_in_phone">Phone</string>
+    <string name="hint_sign_in_email">Email</string>
+    <string name="label_text_sign_in_user">User name</string>
+    <string name="label_text_sign_in_pass">Pass word</string>
+    <string name="label_text_sign_in_pass_again">Re-enter password</string>
+    <string name="label_text_sign_in_phone">Phone</string>
+    <string name="label_text_sign_in_email">Email</string>
+    <string name="register">Register</string>
+
+    <string name="user_name">User Name</string>
+    <string name="email">Email</string>
+    <string name="date_time">Date Time</string>
+    
+    <string name="email_error">Email not correct</string>
+    <string name="pass_error">Password is not long enough</string>
+    <string name="pass_again_error">Re-enter Password is not correct</string>
+    <string name="notification">Access email to accuracy acount</string>
+
+    <string name="login_success">Login success</string>
+
+    <string name="update_information">Update Information</string>
+    <string name="save_update">Save</string>
+</resources>
