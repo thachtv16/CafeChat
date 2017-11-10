@@ -36,7 +36,7 @@ import thachtv.cafechat.define.Constant;
 
 public class UpdateInformationFragment extends BaseFragment implements View.OnClickListener {
 
-    private DatabaseReference mDatabaseReference;
+    private DatabaseReference userReference;
     private FirebaseUser firebaseUser;
 
     private ImageView ivLeftUpdate;
@@ -79,7 +79,7 @@ public class UpdateInformationFragment extends BaseFragment implements View.OnCl
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child(Constant.FirebaseDatabase.USERS).child(firebaseUser.getUid());
+        userReference = FirebaseDatabase.getInstance().getReference().child(Constant.FirebaseDatabase.USERS).child(firebaseUser.getUid());
 
         showGender();
         getDataFromInformationFragment();
@@ -94,10 +94,10 @@ public class UpdateInformationFragment extends BaseFragment implements View.OnCl
             case R.id.btn_save_update:
                 pbContentUpdate.setVisibility(View.VISIBLE);
                 userNameUpdate = etUserNameUpdate.getText().toString();
-                mDatabaseReference.child("user_name").setValue(userNameUpdate);
+                userReference.child(Constant.FirebaseDatabase.USER_NAME).setValue(userNameUpdate);
                 phoneUpdate = etPhoneUpdate.getText().toString();
-                mDatabaseReference.child("phone").setValue(phoneUpdate);
-                mDatabaseReference.child("gender").setValue(genderUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                userReference.child(Constant.FirebaseDatabase.PHONE).setValue(phoneUpdate);
+                userReference.child(Constant.FirebaseDatabase.GENDER).setValue(genderUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -136,8 +136,8 @@ public class UpdateInformationFragment extends BaseFragment implements View.OnCl
 
     private void getDataFromInformationFragment() {
         Bundle bundle = getArguments();
-        userNameUpdate = bundle.getString("user_name");
-        phoneUpdate = bundle.getString("phone");
+        userNameUpdate = bundle.getString(Constant.FirebaseDatabase.USER_NAME);
+        phoneUpdate = bundle.getString(Constant.FirebaseDatabase.PHONE);
         etUserNameUpdate.setText(userNameUpdate);
         etPhoneUpdate.setText(phoneUpdate);
     }

@@ -42,5 +42,13 @@
     <string name="login_success">Login success</string>
 
     <string name="update_information">Update Information</string>
+    <string name="profile">Profile</string>
     <string name="save_update">Save</string>
+
+    <string name="find_friend">Find Friend</string>
+
+    <string name="cancel_friend_request">Cancel Friend Request</string>
+    <string name="send_friend_request">Send Friend Request</string>
+    <string name="unfriend_this_person">Unfriend this person</string>
+    <string name="accept_friend_request">Accept Friend Request</string>
 </resources>

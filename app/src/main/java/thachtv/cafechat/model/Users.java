@@ -13,9 +13,10 @@ public class Users {
     public Users() {
     }
 
-    public Users(String userName, String imageAvatar) {
+    public Users(String userName, String imageAvatar, String uid) {
         this.userName = userName;
         this.imageAvatar = imageAvatar;
+        this.uid = uid;
     }
 
     public String getUserName() {

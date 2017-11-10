@@ -29,7 +29,7 @@ import thachtv.cafechat.fragments.contact.SearchUserFragment;
 
 public class MenuFragment extends BaseFragment implements View.OnClickListener {
 
-    private DatabaseReference databaseReference;
+    private DatabaseReference userReference;
     private FirebaseUser firebaseUser;
 
     private CircleImageView civImageMenu;
@@ -71,7 +71,7 @@ public class MenuFragment extends BaseFragment implements View.OnClickListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child(Constant.FirebaseDatabase.USERS).child(firebaseUser.getUid());
+        userReference = FirebaseDatabase.getInstance().getReference().child(Constant.FirebaseDatabase.USERS).child(firebaseUser.getUid());
 
         addDataFromFirebase();
         super.onViewCreated(view, savedInstanceState);
@@ -97,11 +97,11 @@ public class MenuFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void addDataFromFirebase() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String userName = dataSnapshot.child("user_name").getValue().toString();
-                String linkAvatar = dataSnapshot.child("link_avatar").getValue().toString();
+                String userName = dataSnapshot.child(Constant.FirebaseDatabase.USER_NAME).getValue().toString();
+                String linkAvatar = dataSnapshot.child(Constant.FirebaseDatabase.LINK_AVATAR).getValue().toString();
 
                 tvUserNameMenu.setText(userName);
 

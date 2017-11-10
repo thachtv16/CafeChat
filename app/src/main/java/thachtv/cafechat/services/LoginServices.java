@@ -10,8 +10,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 
 import thachtv.cafechat.base.BaseFireBase;
 import thachtv.cafechat.define.Constant;
@@ -24,15 +22,11 @@ import thachtv.cafechat.interfaces.LoginListener;
 public class LoginServices extends BaseFireBase {
 
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
-    private FirebaseUser firebaseUser;
     private Activity activity;
 
     public LoginServices(Activity activity) {
         this.activity = activity;
         mAuth = getFirebaseAuth();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//        mDatabase = getDatabaseReference().child(Constant.FirebaseDatabase.USERS).child(firebaseUser.getUid());
     }
 
     public void loginAccountEmail(String email, String passWord, final LoginListener listener) {

@@ -50,8 +50,10 @@ import static android.app.Activity.RESULT_OK;
 
 public class InformationFragment extends BaseFragment {
 
+    public static final String TAG_INFORMATION = InformationFragment.class.getSimpleName();
+
     private StorageReference storageReference;
-    private DatabaseReference databaseReference;
+    private DatabaseReference userReference;
     private FirebaseUser firebaseUser;
 
     private ImageView ivAvatar;
@@ -79,14 +81,14 @@ public class InformationFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_information, container, false);
-        ivAvatar = (ImageView) rootView.findViewById(R.id.civ_image_avatar);
+        ivAvatar = rootView.findViewById(R.id.civ_image_avatar);
         registerForContextMenu(ivAvatar);
-        tvUserName = (TextView) rootView.findViewById(R.id.tv_user_name);
-        tvEmail = (TextView) rootView.findViewById(R.id.tv_email_information);
-        tvPhone = (TextView) rootView.findViewById(R.id.tv_phone_information);
-        tvGender = (TextView) rootView.findViewById(R.id.tv_gender_information);
-        btnUpdate = (Button) rootView.findViewById(R.id.btn_update_information);
-        pbContentInformation = (ProgressBar) rootView.findViewById(R.id.pb_content_information);
+        tvUserName = rootView.findViewById(R.id.tv_user_name);
+        tvEmail = rootView.findViewById(R.id.tv_email_information);
+        tvPhone = rootView.findViewById(R.id.tv_phone_information);
+        tvGender = rootView.findViewById(R.id.tv_gender_information);
+        btnUpdate = rootView.findViewById(R.id.btn_update_information);
+        pbContentInformation = rootView.findViewById(R.id.pb_content_information);
         return rootView;
     }
 
@@ -96,7 +98,7 @@ public class InformationFragment extends BaseFragment {
 
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child(Constant.FirebaseDatabase.USERS).child(firebaseUser.getUid());
+        userReference = FirebaseDatabase.getInstance().getReference().child(Constant.FirebaseDatabase.USERS).child(firebaseUser.getUid());
 
         nextUpdateInformation();
         addDataFromFirebase();
@@ -175,14 +177,14 @@ public class InformationFragment extends BaseFragment {
             if (resultCode == RESULT_OK) {
                 pbContentInformation.setVisibility(View.VISIBLE);
                 Uri resultUri = result.getUri();
-                StorageReference path = storageReference.child("photos_avatar").child(firebaseUser.getUid() + ".jpg");
+                StorageReference path = storageReference.child(Constant.FirebaseDatabase.PHOTOS_AVATAR).child(firebaseUser.getUid() + ".jpg");
                 path.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if (task.isSuccessful()) {
                             linkAvatar = task.getResult().getDownloadUrl().toString();
-                            Log.d("InformationFragment", linkAvatar);
-                            databaseReference.child("link_avatar").setValue(linkAvatar).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            Log.d(TAG_INFORMATION, linkAvatar);
+                            userReference.child(Constant.FirebaseDatabase.LINK_AVATAR).setValue(linkAvatar).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
@@ -233,8 +235,8 @@ public class InformationFragment extends BaseFragment {
             public void onClick(View view) {
                 UpdateInformationFragment updateInformationFragment = UpdateInformationFragment.newInstance();
                 Bundle bundle = new Bundle();
-                bundle.putString("user_name", userName);
-                bundle.putString("phone", phone);
+                bundle.putString(Constant.FirebaseDatabase.USER_NAME, userName);
+                bundle.putString(Constant.FirebaseDatabase.PHONE, phone);
                 updateInformationFragment.setArguments(bundle);
                 replaceFragmentFromFragment(updateInformationFragment, getActivity().getSupportFragmentManager());
             }
@@ -242,15 +244,14 @@ public class InformationFragment extends BaseFragment {
     }
 
     private void addDataFromFirebase() {
-        Log.d("InformationFragment", "abcdef");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                email = dataSnapshot.child("email").getValue().toString();
-                userName = dataSnapshot.child("user_name").getValue().toString();
-                linkAvatar = dataSnapshot.child("link_avatar").getValue().toString();
-                phone = dataSnapshot.child("phone").getValue().toString();
-                gender = dataSnapshot.child("gender").getValue().toString();
+                email = dataSnapshot.child(Constant.FirebaseDatabase.EMAIL).getValue().toString();
+                userName = dataSnapshot.child(Constant.FirebaseDatabase.USER_NAME).getValue().toString();
+                linkAvatar = dataSnapshot.child(Constant.FirebaseDatabase.LINK_AVATAR).getValue().toString();
+                phone = dataSnapshot.child(Constant.FirebaseDatabase.PHONE).getValue().toString();
+                gender = dataSnapshot.child(Constant.FirebaseDatabase.GENDER).getValue().toString();
 
                 tvUserName.setText(userName);
                 tvEmail.setText(email);

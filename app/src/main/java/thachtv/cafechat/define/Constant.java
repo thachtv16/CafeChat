@@ -7,7 +7,21 @@ package thachtv.cafechat.define;
 public class Constant {
     public static class FirebaseDatabase {
         public static final String USERS = "users";
+        public static final String EMAIL = "email";
+        public static final String GENDER = "gender";
+        public static final String LINK_AVATAR = "link_avatar";
+        public static final String ONLINE = "online";
+        public static final String PASSWORD = "password";
+        public static final String PHONE = "phone";
+        public static final String USER_NAME = "user_name";
+        public static final String UID = "uid";
+
+        public static final String PHOTOS_AVATAR = "photos_avatar";
+
         public static final String FRIEND_REQUEST = "friend_request";
+        public static final String SENT_REQUEST = "sent_request";
+        public static final String RECEIVED_REQUEST = "received_request";
+
         public static final String FRIENDS = "friends";
         public static final String CHAT = "chat";
         public static final String MESSAGES = "messages";

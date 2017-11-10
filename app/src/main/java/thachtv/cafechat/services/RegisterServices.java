@@ -47,15 +47,14 @@ public class RegisterServices extends BaseFireBase {
                 if (task.isSuccessful()) {
                     // Them thong tin user vao db
                     final String uid = task.getResult().getUser().getUid();
-                    HashMap<String, String> userMap = new HashMap<String, String>();
-                    userMap.put("online", String.valueOf(false));
-                    userMap.put("gender", "Other");
-                    userMap.put("phone", "Nothing");
-                    userMap.put("user_name", userName);
-                    userMap.put("link_avatar", "Default");
-                    userMap.put("password", password);
-                    userMap.put("uid", task.getResult().getUser().getUid());
-                    userMap.put("email", email);
+                    HashMap<String, String> userMap = new HashMap<>();
+                    userMap.put(Constant.FirebaseDatabase.ONLINE, String.valueOf(false));
+                    userMap.put(Constant.FirebaseDatabase.GENDER, "Other");
+                    userMap.put(Constant.FirebaseDatabase.PHONE, "Nothing");
+                    userMap.put(Constant.FirebaseDatabase.USER_NAME, userName);
+                    userMap.put(Constant.FirebaseDatabase.LINK_AVATAR, "Default");
+                    userMap.put(Constant.FirebaseDatabase.PASSWORD, password);
+                    userMap.put(Constant.FirebaseDatabase.EMAIL, email);
                     createAcountInDatabase(userMap, uid, new RegisterListener() {
                         @Override
                         public void registerSuccess() {

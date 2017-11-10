@@ -32,12 +32,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        userDatabase.child("online").setValue(true);
+        userDatabase.child(Constant.FirebaseDatabase.ONLINE).setValue(true);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        userDatabase.child("online").setValue(ServerValue.TIMESTAMP);
+        userDatabase.child(Constant.FirebaseDatabase.ONLINE).setValue(ServerValue.TIMESTAMP);
     }
 }

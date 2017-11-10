@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import thachtv.cafechat.R;
+import thachtv.cafechat.define.Constant;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -43,8 +44,8 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences sharedPreferences = getSharedPreferences("CafeChatPref", Context.MODE_PRIVATE);
-                if (sharedPreferences.getBoolean("is_logged_before", false)) {
+                SharedPreferences sharedPreferences = getSharedPreferences(Constant.SharePref.CAFE_CHAT_PREF, Context.MODE_PRIVATE);
+                if (sharedPreferences.getBoolean(Constant.SharePref.IS_LOGGED_BEFORE, false)) {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     finish();
                 }else {

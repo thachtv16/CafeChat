@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,8 +31,9 @@ import thachtv.cafechat.model.Users;
 
 public class SearchUserFragment extends BaseFragment implements NextProfileFragmentListener {
 
-    private FirebaseUser firebaseUser;
-    private DatabaseReference mDataAllUser;
+    public static final String TAG_SEARCH_USER_FRAGMENT = SearchUserFragment.class.getSimpleName();
+
+    private DatabaseReference userReference;
 
     private RecyclerView rvAllUsers;
     private TextView tvTitleAllUser;
@@ -48,32 +47,17 @@ public class SearchUserFragment extends BaseFragment implements NextProfileFragm
         return searchUserFragment;
     }
 
-    /*@Override
-    public int getLayoutResId() {
-        return R.layout.fragment_search_user;
-    }
-
-    @Override
-    public void inOnCreateView(View rootView, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDataAllUser = FirebaseDatabase.getInstance().getReference();
-
-        initUI(rootView);
-        showActionBar();
-        getDataFromFirebaseAndLoadMore();
-    }*/
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_search_user, container, false);
-        rvAllUsers = (RecyclerView) rootView.findViewById(R.id.rv_all_user);
-        usersArrayList = new ArrayList<Users>();
+        rvAllUsers = rootView.findViewById(R.id.rv_all_user);
+        usersArrayList = new ArrayList<>();
         allUserAdapter = new AllUserAdapter(getContext(), usersArrayList);
         rvAllUsers.setAdapter(allUserAdapter);
         allUserAdapter.setListener(this);
-        tvTitleAllUser = (TextView) rootView.findViewById(R.id.tv_title_extra);
-        ivLeftAllUser = (ImageView) rootView.findViewById(R.id.iv_left_extra);
+        tvTitleAllUser = rootView.findViewById(R.id.tv_title_extra);
+        ivLeftAllUser = rootView.findViewById(R.id.iv_left_extra);
         return rootView;
     }
 
@@ -81,15 +65,14 @@ public class SearchUserFragment extends BaseFragment implements NextProfileFragm
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDataAllUser = FirebaseDatabase.getInstance().getReference();
+        userReference = FirebaseDatabase.getInstance().getReference();
 
         showActionBar();
         getDataFromFirebaseAndLoadMore();
     }
 
     private void showActionBar() {
-        tvTitleAllUser.setText("All User");
+        tvTitleAllUser.setText(R.string.find_friend);
         ivLeftAllUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,16 +106,14 @@ public class SearchUserFragment extends BaseFragment implements NextProfileFragm
             }
         });*/
 
-        mDataAllUser.child(Constant.FirebaseDatabase.USERS).addChildEventListener(new ChildEventListener() {
+        userReference.child(Constant.FirebaseDatabase.USERS).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String userName = dataSnapshot.child("user_name").getValue().toString();
-                String linkImageAvatar = dataSnapshot.child("link_avatar").getValue().toString();
-                String uid = dataSnapshot.child("uid").getValue().toString();
-                Log.d("ProfileFragment", uid);
-                Log.d("ProfileFragment", userName);
-                Users users = new Users(userName, linkImageAvatar);
-                users.setUid(uid);
+                String userName = dataSnapshot.child(Constant.FirebaseDatabase.USER_NAME).getValue().toString();
+                String linkImageAvatar = dataSnapshot.child(Constant.FirebaseDatabase.LINK_AVATAR).getValue().toString();
+                String uid = dataSnapshot.getKey();
+                Log.d(TAG_SEARCH_USER_FRAGMENT, uid);
+                Users users = new Users(userName, linkImageAvatar, uid);
                 usersArrayList.add(users);
                 allUserAdapter.notifyDataSetChanged();
             }
@@ -163,7 +144,7 @@ public class SearchUserFragment extends BaseFragment implements NextProfileFragm
     public void nextAction(String uid) {
         ProfileFragment profileFragment = ProfileFragment.newInstance();
         Bundle bundle = new Bundle();
-        bundle.putString("uid", uid);
+        bundle.putString(Constant.FirebaseDatabase.UID, uid);
         profileFragment.setArguments(bundle);
         replaceFragmentFromFragment(profileFragment, getActivity().getSupportFragmentManager());
     }

@@ -3,7 +3,6 @@ package thachtv.cafechat.fragments.contact;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,9 +39,7 @@ import thachtv.cafechat.define.Constant;
 
 public class ProfileFragment extends BaseFragment implements View.OnClickListener {
 
-    public static final String ACTION_PRIVACY = "thachtv.cafechat.action_privacy";
-
-    private DatabaseReference databaseReference;
+    private DatabaseReference userReference;
     private DatabaseReference friendRequestDatabase;
     private DatabaseReference friendsDatabase;
     private FirebaseUser currentUser;
@@ -58,14 +55,16 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private Button btnSendRequestFriend;
     private Button btnDeclineFriendRequest;
 
-    private String uid;
+    private String secondUid;
+    private String firstUid;
+    private String totalUid;
     private String current_state;
 
     private CafeChat cafeChat = CafeChat.getInstance();
 
+    @NonNull
     public static ProfileFragment newInstance() {
-        ProfileFragment profileFragment = new ProfileFragment();
-        return profileFragment;
+        return new ProfileFragment();
     }
 
     @Nullable
@@ -73,18 +72,18 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        tvTitleProfile = (TextView) rootView.findViewById(R.id.tv_title_extra);
-        tvTitleProfile.setText("Profile");
-        ivLeftBackProfile = (ImageView) rootView.findViewById(R.id.iv_left_extra);
+        tvTitleProfile = rootView.findViewById(R.id.tv_title_extra);
+        tvTitleProfile.setText(R.string.profile);
+        ivLeftBackProfile = rootView.findViewById(R.id.iv_left_extra);
         ivLeftBackProfile.setOnClickListener(this);
-        civImageProfile = (CircleImageView) rootView.findViewById(R.id.civ_image_avatar_profile);
-        tvUserNameProfile = (TextView) rootView.findViewById(R.id.tv_user_name_profile);
-        tvEmailProfile = (TextView) rootView.findViewById(R.id.tv_email_profile);
-        tvPhoneProfile = (TextView) rootView.findViewById(R.id.tv_phone_profile);
-        tvGenderProfile = (TextView) rootView.findViewById(R.id.tv_gender_profile);
-        btnSendRequestFriend = (Button) rootView.findViewById(R.id.btn_send_friend_request);
+        civImageProfile = rootView.findViewById(R.id.civ_image_avatar_profile);
+        tvUserNameProfile = rootView.findViewById(R.id.tv_user_name_profile);
+        tvEmailProfile = rootView.findViewById(R.id.tv_email_profile);
+        tvPhoneProfile = rootView.findViewById(R.id.tv_phone_profile);
+        tvGenderProfile = rootView.findViewById(R.id.tv_gender_profile);
+        btnSendRequestFriend = rootView.findViewById(R.id.btn_send_friend_request);
         btnSendRequestFriend.setOnClickListener(this);
-        btnDeclineFriendRequest = (Button) rootView.findViewById(R.id.btn_decline_friend_request);
+        btnDeclineFriendRequest = rootView.findViewById(R.id.btn_decline_friend_request);
         btnDeclineFriendRequest.setOnClickListener(this);
 
         return rootView;
@@ -96,10 +95,14 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         getUidFromSearchUserFragment();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child(Constant.FirebaseDatabase.USERS).child(uid);
+        userReference = FirebaseDatabase.getInstance().getReference().child(Constant.FirebaseDatabase.USERS).child(secondUid);
         friendRequestDatabase = FirebaseDatabase.getInstance().getReference().child(Constant.FirebaseDatabase.FRIEND_REQUEST);
         friendsDatabase = FirebaseDatabase.getInstance().getReference().child(Constant.FirebaseDatabase.FRIENDS);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (null != currentUser) {
+            firstUid = currentUser.getUid();
+        }
+        totalUid = firstUid + "+" + secondUid;
 
         current_state = "not_friend";
         showProfile();
@@ -107,19 +110,18 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     private void getUidFromSearchUserFragment() {
         Bundle bundle = getArguments();
-        uid = bundle.getString("uid");
-        Log.d("ProfileFragment", uid);
+        secondUid = bundle.getString(Constant.FirebaseDatabase.UID);
     }
 
     private void showProfile() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String userName = dataSnapshot.child("user_name").getValue().toString();
-                String linkAvatar = dataSnapshot.child("link_avatar").getValue().toString();
-                String email = dataSnapshot.child("email").getValue().toString();
-                String phone = dataSnapshot.child("phone").getValue().toString();
-                String gender = dataSnapshot.child("gender").getValue().toString();
+                String userName = dataSnapshot.child(Constant.FirebaseDatabase.USER_NAME).getValue().toString();
+                String linkAvatar = dataSnapshot.child(Constant.FirebaseDatabase.LINK_AVATAR).getValue().toString();
+                String email = dataSnapshot.child(Constant.FirebaseDatabase.EMAIL).getValue().toString();
+                String phone = dataSnapshot.child(Constant.FirebaseDatabase.PHONE).getValue().toString();
+                String gender = dataSnapshot.child(Constant.FirebaseDatabase.GENDER).getValue().toString();
 
                 tvEmailProfile.setText(email);
                 tvPhoneProfile.setText(phone);
@@ -130,7 +132,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 }
 
                 // --------------- FRIEND LIST ---------------
-                friendRequestDatabase.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                /*friendRequestDatabase.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.hasChild(uid)) {
@@ -155,6 +157,50 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                                     if (dataSnapshot.hasChild(uid)) {
                                         current_state = "friends";
                                         btnSendRequestFriend.setText("Unfriend this person");
+
+                                        btnDeclineFriendRequest.setVisibility(View.INVISIBLE);
+                                        btnDeclineFriendRequest.setEnabled(false);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });*/
+                friendRequestDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild(totalUid)) {
+                            String currentUid = dataSnapshot.child(totalUid).child(Constant.FirebaseDatabase.SENT_REQUEST).getValue().toString();
+                            if (currentUid.equals(firstUid)) {
+                                current_state = "request_sent";
+                                btnSendRequestFriend.setText(R.string.cancel_friend_request);
+
+                                btnDeclineFriendRequest.setVisibility(View.INVISIBLE);
+                                btnDeclineFriendRequest.setEnabled(false);
+                            }else if (currentUid.equals(secondUid)) {
+                                current_state = "request_received";
+                                btnSendRequestFriend.setText(R.string.accept_friend_request);
+
+                                btnDeclineFriendRequest.setVisibility(View.VISIBLE);
+                                btnDeclineFriendRequest.setEnabled(true);
+                            }
+                        }else {
+                            friendsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.hasChild(totalUid)) {
+                                        current_state = "friends";
+                                        btnSendRequestFriend.setText(R.string.unfriend_this_person);
 
                                         btnDeclineFriendRequest.setVisibility(View.INVISIBLE);
                                         btnDeclineFriendRequest.setEnabled(false);
@@ -201,7 +247,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private void showFriendRequest() {
         // --------------- NOT FRIEND ---------------
         if (current_state.equals("not_friend")) {
-            btnSendRequestFriend.setEnabled(false);
+            /*btnSendRequestFriend.setEnabled(false);
             friendRequestDatabase.child(currentUser.getUid()).child(uid).child("request_type")
                     .setValue("sent").addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
@@ -225,15 +271,35 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
                     btnSendRequestFriend.setEnabled(true);
                 }
+            });*/
+
+            HashMap<String, String> friendRequestMap = new HashMap<>();
+            friendRequestMap.put(Constant.FirebaseDatabase.SENT_REQUEST, firstUid);
+            friendRequestMap.put(Constant.FirebaseDatabase.RECEIVED_REQUEST, secondUid);
+            friendRequestDatabase.child(totalUid).setValue(friendRequestMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        current_state = "request_sent";
+                        btnSendRequestFriend.setText(R.string.cancel_friend_request);
+                        Toast.makeText(getActivity(), "Request Sent Successful", Toast.LENGTH_SHORT).show();
+
+                        btnDeclineFriendRequest.setVisibility(View.INVISIBLE);
+                        btnDeclineFriendRequest.setEnabled(false);
+                    }else {
+                        Toast.makeText(getActivity(), "Fail Sending Request", Toast.LENGTH_SHORT).show();
+                    }
+                    btnSendRequestFriend.setEnabled(true);
+                }
             });
         }
 
         // --------------- CANCEL FRIEND REQUEST ---------------
         if (current_state.equals("request_sent")) {
-            friendRequestDatabase.child(currentUser.getUid()).child(uid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            /*friendRequestDatabase.child(currentUser.getUid()).child(secondUid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    friendRequestDatabase.child(uid).child(currentUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    friendRequestDatabase.child(secondUid).child(currentUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             btnSendRequestFriend.setEnabled(true);
@@ -246,16 +312,27 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                         }
                     });
                 }
+            });*/
+            friendRequestDatabase.child(totalUid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    btnSendRequestFriend.setEnabled(true);
+                    current_state = "not_friend";
+                    btnSendRequestFriend.setText(R.string.send_friend_request);
+                    Toast.makeText(getActivity(), "Cancel Friend Request Successful", Toast.LENGTH_SHORT).show();
+
+                    btnDeclineFriendRequest.setVisibility(View.INVISIBLE);
+                    btnDeclineFriendRequest.setEnabled(false);
+                }
             });
         }
 
         // --------------- REQUEST RECEIVED STATE ---------------
         if (current_state.equals("request_received")) {
             final String currentDate = SimpleDateFormat.getDateTimeInstance().format(new Date());
-            Map<String, String> friendMapCurrentId = new HashMap<String, String>();
-            friendMapCurrentId.put("date_time", currentDate);
-            friendMapCurrentId.put("uid", uid);
-            friendsDatabase.child(currentUser.getUid()).child(uid).setValue(friendMapCurrentId).addOnSuccessListener(new OnSuccessListener<Void>() {
+            Map<String, String> friendMap = new HashMap<>();
+            friendMap.put("date_time", currentDate);
+            /*friendsDatabase.child(currentUser.getUid()).child(uid).setValue(friendMapCurrentId).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Map<String, String> friendMapUid = new HashMap<String, String>();
@@ -283,12 +360,28 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                         }
                     });
                 }
+            });*/
+            friendsDatabase.child(totalUid).setValue(friendMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    friendRequestDatabase.child(totalUid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            btnSendRequestFriend.setEnabled(true);
+                            current_state = "friends";
+                            btnSendRequestFriend.setText(R.string.unfriend_this_person);
+
+                            btnDeclineFriendRequest.setVisibility(View.INVISIBLE);
+                            btnDeclineFriendRequest.setEnabled(false);
+                        }
+                    });
+                }
             });
         }
 
         // --------------- UNFRIEND ---------------
         if (current_state.equals("friends")) {
-            friendsDatabase.child(Constant.FirebaseDatabase.FRIENDS).addValueEventListener(new ValueEventListener() {
+            /*friendsDatabase.child(Constant.FirebaseDatabase.FRIENDS).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     friendsDatabase.child(currentUser.getUid()).child(uid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -313,13 +406,24 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
+            });*/
+            friendsDatabase.child(totalUid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    btnSendRequestFriend.setEnabled(true);
+                    current_state = "not_friend";
+                    btnSendRequestFriend.setText(R.string.send_friend_request);
+
+                    btnDeclineFriendRequest.setVisibility(View.INVISIBLE);
+                    btnDeclineFriendRequest.setEnabled(false);
+                }
             });
         }
     }
 
     private void showDeclineFriendRequest() {
         if (current_state.equals("request_received")) {
-            friendRequestDatabase.child(Constant.FirebaseDatabase.FRIEND_REQUEST).addValueEventListener(new ValueEventListener() {
+            /*friendRequestDatabase.child(Constant.FirebaseDatabase.FRIEND_REQUEST).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     friendRequestDatabase.child(currentUser.getUid()).child(uid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -343,6 +447,17 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
+                }
+            });*/
+            friendRequestDatabase.child(totalUid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    btnSendRequestFriend.setEnabled(true);
+                    current_state = "not_friend";
+                    btnSendRequestFriend.setText(R.string.send_friend_request);
+
+                    btnDeclineFriendRequest.setVisibility(View.INVISIBLE);
+                    btnDeclineFriendRequest.setEnabled(false);
                 }
             });
         }
