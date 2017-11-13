@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,11 +36,9 @@ import thachtv.cafechat.base.BaseFragment;
 import thachtv.cafechat.define.Constant;
 import thachtv.cafechat.model.Message;
 
-/**
- * Created by Thinkpad on 10/24/2017.
- */
-
 public class ChatDetailFragment extends BaseFragment {
+
+    public static final String TAG_CHAT_DETAIL_FRAGMENT = ChatDetailFragment.class.getSimpleName();
 
     private TextView tvUserNameToolBar;
     private TextView tvLastSeenToolBar;
@@ -54,17 +53,16 @@ public class ChatDetailFragment extends BaseFragment {
     private MessageAdapter messageAdapter;
     private ArrayList<Message> messageArrayList;
 
-    private String uid;
-    private String currentUid;
+    private String linkAvatar;
+    private String toolBarUserName;
+    private String statusOnlineToolBar;
+
+    private String secondUid;
+    private String firstUid;
 
     private DatabaseReference rootRef;
-    private FirebaseAuth mAuth;
 
     private static final int TOTAL_ITEM_TO_LOAD = 10;
-    private int currentPage = 1;
-    private int itemPosition = 0;
-    private String lastKey = "";
-    private String prevKey = "";
 
     @NonNull
     public static ChatDetailFragment newInstance() {
@@ -76,15 +74,15 @@ public class ChatDetailFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_chat_detail, container, false);
 
-        tvUserNameToolBar = (TextView) rootView.findViewById(R.id.tv_user_message);
-        tvLastSeenToolBar = (TextView) rootView.findViewById(R.id.tv_last_seen_message);
-        ivLeftBackToolBar = (ImageView) rootView.findViewById(R.id.iv_left_message);
+        tvUserNameToolBar = rootView.findViewById(R.id.tv_user_message);
+        tvLastSeenToolBar = rootView.findViewById(R.id.tv_last_seen_message);
+        ivLeftBackToolBar = rootView.findViewById(R.id.iv_left_message);
 
-        etTextMessage = (EditText) rootView.findViewById(R.id.et_text_message);
-        ivPlusMessage = (ImageView) rootView.findViewById(R.id.iv_plus_message);
-        ivSendMessage = (ImageView) rootView.findViewById(R.id.iv_send_message);
-        rvMessage = (RecyclerView) rootView.findViewById(R.id.rv_message);
-        srlLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.srl_layout);
+        etTextMessage = rootView.findViewById(R.id.et_text_message);
+        ivPlusMessage = rootView.findViewById(R.id.iv_plus_message);
+        ivSendMessage = rootView.findViewById(R.id.iv_send_message);
+        rvMessage = rootView.findViewById(R.id.rv_message);
+        srlLayout = rootView.findViewById(R.id.srl_layout);
         return rootView;
     }
 
@@ -92,32 +90,37 @@ public class ChatDetailFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rootRef = FirebaseDatabase.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
-        currentUid = mAuth.getCurrentUser().getUid();
+        showFirebase();
 
-        messageArrayList = new ArrayList<Message>();
+        messageArrayList = new ArrayList<>();
         messageAdapter = new MessageAdapter(getContext(), messageArrayList);
         rvMessage.setAdapter(messageAdapter);
 
         getDataAndShowToolBar();
-        addDataToChat();
         sendMessage();
         loadMessage();
-        scrollToTop();
+    }
+
+    private void showFirebase() {
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (null != currentUser) {
+            firstUid = currentUser.getUid();
+        }
     }
 
     private void getDataAndShowToolBar() {
         Bundle bundle = getArguments();
-        uid = bundle.getString("uid");
-        rootRef.child(Constant.FirebaseDatabase.USERS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        secondUid = bundle.getString("uid");
+        rootRef.child(Constant.FirebaseDatabase.USERS).child(secondUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String toolBarUserName = dataSnapshot.child("user_name").getValue().toString();
-                String statusOnlineToolBar = dataSnapshot.child("online").getValue().toString();
+                toolBarUserName = dataSnapshot.child(Constant.FirebaseDatabase.USER_NAME).getValue().toString();
+                statusOnlineToolBar = dataSnapshot.child(Constant.FirebaseDatabase.ONLINE).getValue().toString();
+                linkAvatar = dataSnapshot.child(Constant.FirebaseDatabase.LINK_AVATAR).getValue().toString();
                 tvUserNameToolBar.setText(toolBarUserName);
                 if (statusOnlineToolBar.equals("true")) {
-                    tvLastSeenToolBar.setText("online");
+                    tvLastSeenToolBar.setText(R.string.online);
                 }else {
                     GetTimeAgo getTimeAgo = new GetTimeAgo();
                     long lastTime = Long.parseLong(statusOnlineToolBar);
@@ -139,58 +142,29 @@ public class ChatDetailFragment extends BaseFragment {
         });
     }
 
-    private void addDataToChat() {
-        rootRef.child(Constant.FirebaseDatabase.CHAT).child(currentUid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.hasChild(uid)) {
-                    Map chatAddMap = new HashMap();
-                    chatAddMap.put("seen", false);
-                    chatAddMap.put("time_stamp", ServerValue.TIMESTAMP);
-
-                    Map chatUserMap = new HashMap();
-                    chatUserMap.put(Constant.FirebaseDatabase.CHAT + "/" + currentUid + "/" + uid, chatAddMap);
-                    chatUserMap.put(Constant.FirebaseDatabase.CHAT + "/" + uid + "/" + currentUid, chatAddMap);
-
-                    rootRef.updateChildren(chatUserMap, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                            if (databaseError != null) {
-                                Log.d("CHAT_LOG", databaseError.getMessage().toString());
-                            }
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     private void sendMessage() {
         ivSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String message = etTextMessage.getText().toString();
                 if (!TextUtils.isEmpty(message)) {
-                    String currentUserRef = Constant.FirebaseDatabase.MESSAGES + "/" + currentUid + "/" + uid;
-                    String chatUserRef = Constant.FirebaseDatabase.MESSAGES + "/" + uid + "/" + currentUid;
+                    String currentUserRef = Constant.FirebaseDatabase.MESSAGES + "/" + firstUid + "/" + secondUid;
+                    String chatUserRef = Constant.FirebaseDatabase.MESSAGES + "/" + secondUid + "/" + firstUid;
 
-                    DatabaseReference userMessagePush = rootRef.child(Constant.FirebaseDatabase.MESSAGES).child(currentUid).child(uid).push();
+                    DatabaseReference userMessagePush = rootRef.child(Constant.FirebaseDatabase.MESSAGES).child(firstUid).child(secondUid).push();
                     String pushUid = userMessagePush.getKey();
 
-                    Map messageMap = new HashMap();
-                    messageMap.put("message", message);
-                    messageMap.put("seen", false);
-                    messageMap.put("type", "text");
-                    messageMap.put("time", ServerValue.TIMESTAMP);
-                    messageMap.put("from", currentUid);
-                    messageMap.put("to", uid);
+                    Map<String, Object> messageMap = new HashMap<>();
+                    messageMap.put(Constant.FirebaseDatabase.MESSAGE, message);
+                    messageMap.put(Constant.FirebaseDatabase.SEEN, false);
+                    messageMap.put(Constant.FirebaseDatabase.TYPE, "text");
+                    messageMap.put(Constant.FirebaseDatabase.TIME, ServerValue.TIMESTAMP);
+                    messageMap.put(Constant.FirebaseDatabase.LINK_AVATAR_MESSAGE, linkAvatar);
+                    Log.d(TAG_CHAT_DETAIL_FRAGMENT, linkAvatar);
+                    messageMap.put(Constant.FirebaseDatabase.FROM, firstUid);
+                    messageMap.put(Constant.FirebaseDatabase.TO, secondUid);
 
-                    Map messageUserMap = new HashMap();
+                    Map<String, Object> messageUserMap = new HashMap<>();
                     messageUserMap.put(currentUserRef + "/" + pushUid, messageMap);
                     messageUserMap.put(chatUserRef + "/" + pushUid, messageMap);
 
@@ -200,7 +174,7 @@ public class ChatDetailFragment extends BaseFragment {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                             if (databaseError != null) {
-                                Log.d("CHAT_LOG", databaseError.getMessage().toString());
+                                Log.d(TAG_CHAT_DETAIL_FRAGMENT, databaseError.getMessage());
                             }
                         }
                     });
@@ -209,99 +183,19 @@ public class ChatDetailFragment extends BaseFragment {
         });
     }
 
-    long oldTime = System.currentTimeMillis() / 1000;
-    boolean isFirstReceiveMessage = true;
-
     private void loadMessage() {
-        DatabaseReference messageRef = rootRef.child(Constant.FirebaseDatabase.MESSAGES).child(currentUid).child(uid);
+        DatabaseReference messageRef = rootRef.child(Constant.FirebaseDatabase.MESSAGES).child(firstUid).child(secondUid);
+        int currentPage = 1;
         Query messageQuery = messageRef.limitToLast(currentPage * TOTAL_ITEM_TO_LOAD);
         messageQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d("abc123", dataSnapshot.toString());
                 Message message = dataSnapshot.getValue(Message.class);
-                if (isFirstReceiveMessage) {
-                    oldTime = System.currentTimeMillis() / 1000;
-                }
-                isFirstReceiveMessage = false;
-                long newTime = System.currentTimeMillis() / 1000;
-                long delta = newTime - oldTime;
-                Log.d("ABC", "delta=" + delta);
-
-                if (delta > 1) {
-                    message.setTime(0);
-                }
-
-                oldTime = newTime;
-
-                itemPosition++;
-                if (itemPosition == 1) {
-                    String messageKey = dataSnapshot.getKey();
-                    lastKey = messageKey;
-                    prevKey = messageKey;
-                }
 
                 messageArrayList.add(message);
                 messageAdapter.notifyDataSetChanged();
 
                 rvMessage.scrollToPosition(messageArrayList.size() - 1);
-                srlLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void scrollToTop() {
-        srlLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                currentPage++;
-                itemPosition = 0;
-                loadMoreMessage();
-            }
-        });
-    }
-
-    private void loadMoreMessage() {
-        DatabaseReference messageRef = rootRef.child(Constant.FirebaseDatabase.MESSAGES).child(currentUid).child(uid);
-        Query messageQuery = messageRef.orderByKey().endAt(lastKey).limitToLast(10);
-        messageQuery.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Message message = dataSnapshot.getValue(Message.class);
-                String messageKey = dataSnapshot.getKey();
-
-                if (!prevKey.equals(messageKey)) {
-                    messageArrayList.add(itemPosition++, message);
-                    prevKey = messageKey;
-                }
-
-                if (itemPosition == 1) {
-                    lastKey = messageKey;
-                }
-
-                messageAdapter.notifyDataSetChanged();
-
-                //rvMessage.scrollToPosition(messageArrayList.size() - 1);
                 srlLayout.setRefreshing(false);
             }
 
