@@ -19,12 +19,20 @@ public class Constant {
         public static final String PHOTOS_AVATAR = "photos_avatar";
 
         public static final String FRIEND_REQUEST = "friend_request";
-        public static final String SENT_REQUEST = "sent_request";
-        public static final String RECEIVED_REQUEST = "received_request";
+        public static final String REQUEST_TYPE = "request_type";
 
         public static final String FRIENDS = "friends";
+        public static final String DATE_TIME = "date_time";
+
         public static final String CHAT = "chat";
         public static final String MESSAGES = "messages";
+        public static final String MESSAGE = "message";
+        public static final String SEEN = "seen";
+        public static final String TYPE = "type";
+        public static final String TIME = "time";
+        public static final String LINK_AVATAR_MESSAGE = "link_avatar_message";
+        public static final String FROM = "from";
+        public static final String TO = "to";
     }
 
     public static class InformationImage {

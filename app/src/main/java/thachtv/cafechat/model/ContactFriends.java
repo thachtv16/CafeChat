@@ -15,15 +15,10 @@ public class ContactFriends {
     public ContactFriends() {
     }
 
-    public ContactFriends(String userNameContact, String imageAvatarContact, String dateTimeContact) {
+    public ContactFriends(String userNameContact, String imageAvatarContact, String uidContact, String dateTimeContact, String dotOnline) {
         this.userNameContact = userNameContact;
         this.imageAvatarContact = imageAvatarContact;
-        this.dateTimeContact = dateTimeContact;
-    }
-
-    public ContactFriends(String userNameContact, String imageAvatarContact, String dateTimeContact, String dotOnline) {
-        this.userNameContact = userNameContact;
-        this.imageAvatarContact = imageAvatarContact;
+        this.uidContact = uidContact;
         this.dateTimeContact = dateTimeContact;
         this.dotOnline = dotOnline;
     }

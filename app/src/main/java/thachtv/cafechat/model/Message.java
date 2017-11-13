@@ -1,31 +1,26 @@
 package thachtv.cafechat.model;
 
-/**
- * Created by Thinkpad on 10/28/2017.
- */
-
 public class Message {
 
     private String message;
     private String type;
     private long time;
     private boolean seen;
+    private String linkAvatar;
     private String from;
     private String to;
 
     public Message() {
     }
 
-    public Message(String from, String to) {
-        this.from = from;
-        this.to = to;
-    }
-
-    public Message(String message, String type, long time, boolean seen) {
+    public Message(String message, String type, long time, boolean seen, String linkAvatar, String from, String to) {
         this.message = message;
         this.type = type;
         this.time = time;
         this.seen = seen;
+        this.linkAvatar = linkAvatar;
+        this.from = from;
+        this.to = to;
     }
 
     public String getMessage() {
@@ -58,6 +53,14 @@ public class Message {
 
     public void setSeen(boolean seen) {
         this.seen = seen;
+    }
+
+    public String getLinkAvatar() {
+        return linkAvatar;
+    }
+
+    public void setLinkAvatar(String linkAvatar) {
+        this.linkAvatar = linkAvatar;
     }
 
     public String getFrom() {

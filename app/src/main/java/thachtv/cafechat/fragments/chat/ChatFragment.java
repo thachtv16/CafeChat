@@ -1,9 +1,9 @@
 package thachtv.cafechat.fragments.chat;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +23,6 @@ import thachtv.cafechat.base.BaseFragment;
 import thachtv.cafechat.define.Constant;
 import thachtv.cafechat.model.ChatFriend;
 
-/**
- * Created by Thinkpad on 09/30/2017.
- */
-
 public class ChatFragment extends BaseFragment {
 
     private DatabaseReference roorRef;
@@ -36,9 +32,9 @@ public class ChatFragment extends BaseFragment {
     private ChatFriendAdapter chatFriendAdapter;
     private ArrayList<ChatFriend> chatFriendArrayList;
 
+    @NonNull
     public static ChatFragment newInstance() {
-        ChatFragment chatFragment = new ChatFragment();
-        return chatFragment;
+        return new ChatFragment();
     }
 
     @Nullable
@@ -66,7 +62,6 @@ public class ChatFragment extends BaseFragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String uid = dataSnapshot.getKey();
-                Log.d("qwe", uid);
             }
 
             @Override

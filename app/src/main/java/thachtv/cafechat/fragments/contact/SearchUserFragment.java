@@ -1,6 +1,7 @@
 package thachtv.cafechat.fragments.contact;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,33 +26,28 @@ import thachtv.cafechat.define.Constant;
 import thachtv.cafechat.interfaces.NextProfileFragmentListener;
 import thachtv.cafechat.model.Users;
 
-/**
- * Created by Thinkpad on 10/16/2017.
- */
-
 public class SearchUserFragment extends BaseFragment implements NextProfileFragmentListener {
 
     public static final String TAG_SEARCH_USER_FRAGMENT = SearchUserFragment.class.getSimpleName();
 
     private DatabaseReference userReference;
 
-    private RecyclerView rvAllUsers;
     private TextView tvTitleAllUser;
     private ImageView ivLeftAllUser;
 
     private AllUserAdapter allUserAdapter;
     private ArrayList<Users> usersArrayList;
 
+    @NonNull
     public static SearchUserFragment newInstance() {
-        SearchUserFragment searchUserFragment = new SearchUserFragment();
-        return searchUserFragment;
+        return new SearchUserFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_search_user, container, false);
-        rvAllUsers = rootView.findViewById(R.id.rv_all_user);
+        RecyclerView rvAllUsers = rootView.findViewById(R.id.rv_all_user);
         usersArrayList = new ArrayList<>();
         allUserAdapter = new AllUserAdapter(getContext(), usersArrayList);
         rvAllUsers.setAdapter(allUserAdapter);

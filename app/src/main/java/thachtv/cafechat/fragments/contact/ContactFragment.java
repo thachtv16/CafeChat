@@ -3,6 +3,7 @@ package thachtv.cafechat.fragments.contact;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,43 +30,38 @@ import thachtv.cafechat.fragments.chat.ChatDetailFragment;
 import thachtv.cafechat.interfaces.NextChooseListener;
 import thachtv.cafechat.model.ContactFriends;
 
-/**
- * Created by Thinkpad on 09/30/2017.
- */
-
 public class ContactFragment extends BaseFragment implements NextChooseListener {
 
-    private DatabaseReference friendDatabase;
-    private DatabaseReference userDatabase;
-    private FirebaseAuth mAuth;
+    public static final String TAG_CONTACT_FRAGMENT = ContactFriends.class.getSimpleName();
+
+    private DatabaseReference rootReference;
 
     private RecyclerView rvContactFriend;
     private ContactFriendsAdapter friendsAdapter;
     private ArrayList<ContactFriends> friendsArrayList;
 
-    private String uid;
+    private String firstUid;
+    private String secondUid;
 
+    @NonNull
     public static ContactFragment newInstance() {
-        ContactFragment contactFragment = new ContactFragment();
-        return contactFragment;
+        return new ContactFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
-        rvContactFriend = (RecyclerView) rootView.findViewById(R.id.rv_contact_friend);
+        rvContactFriend = rootView.findViewById(R.id.rv_contact_friend);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
-        friendDatabase = FirebaseDatabase.getInstance().getReference();
-        userDatabase = FirebaseDatabase.getInstance().getReference().child(Constant.FirebaseDatabase.USERS);
 
-        friendsArrayList = new ArrayList<ContactFriends>();
+        showFirebase();
+        friendsArrayList = new ArrayList<>();
         friendsAdapter = new ContactFriendsAdapter(getContext(), friendsArrayList);
         rvContactFriend.setAdapter(friendsAdapter);
         friendsAdapter.setListener(this);
@@ -72,27 +69,28 @@ public class ContactFragment extends BaseFragment implements NextChooseListener 
         getDataFromFirebase();
     }
 
+    private void showFirebase() {
+        rootReference = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (null != currentUser) {
+            firstUid = currentUser.getUid();
+        }
+    }
+
     private void getDataFromFirebase() {
-        friendDatabase.child(Constant.FirebaseDatabase.FRIENDS).child(mAuth.getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
+        rootReference.child(Constant.FirebaseDatabase.FRIENDS).child(firstUid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                final String dateTime = dataSnapshot.child("date_time").getValue().toString();
-                uid = dataSnapshot.child("uid").getValue().toString();
-                Log.d("ContactFragment", uid);
-                final ContactFriends contactFriends = new ContactFriends();
-                contactFriends.setUidContact(uid);
-                userDatabase.child(uid).addValueEventListener(new ValueEventListener() {
+                secondUid = dataSnapshot.getKey();
+                final String dateTime = dataSnapshot.child(Constant.FirebaseDatabase.DATE_TIME).getValue().toString();
+                Log.d(TAG_CONTACT_FRAGMENT, secondUid);
+                rootReference.child(Constant.FirebaseDatabase.USERS).child(secondUid).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        String userName = dataSnapshot.child("user_name").getValue().toString();
-                        String linkAvatar = dataSnapshot.child("link_avatar").getValue().toString();
-                        String dotOnline = dataSnapshot.child("online").getValue().toString();
-                        //ContactFriends contactFriends = new ContactFriends(userName, linkAvatar, dateTime, dotOnline);
-                        contactFriends.setUserNameContact(userName);
-                        contactFriends.setDateTimeContact(dateTime);
-                        contactFriends.setImageAvatarContact(linkAvatar);
-                        contactFriends.setDotOnline(dotOnline);
-                        Log.d("ContactFragment===", contactFriends.getUidContact());
+                        String userName = dataSnapshot.child(Constant.FirebaseDatabase.USER_NAME).getValue().toString();
+                        String linkAvatar = dataSnapshot.child(Constant.FirebaseDatabase.LINK_AVATAR).getValue().toString();
+                        String dotOnline = dataSnapshot.child(Constant.FirebaseDatabase.ONLINE).getValue().toString();
+                        ContactFriends contactFriends = new ContactFriends(userName, linkAvatar, secondUid,dateTime, dotOnline);
                         friendsArrayList.add(contactFriends);
                         friendsAdapter.notifyDataSetChanged();
                     }
@@ -139,7 +137,7 @@ public class ContactFragment extends BaseFragment implements NextChooseListener 
                         ProfileFragment profileFragment = ProfileFragment.newInstance();
                         Bundle bundle = new Bundle();
                         bundle.putString("uid", uid);
-                        Log.d("ContactFragment", uid);
+                        Log.d(TAG_CONTACT_FRAGMENT, uid);
                         profileFragment.setArguments(bundle);
                         replaceFragmentFromFragment(profileFragment, getActivity().getSupportFragmentManager());
                         break;
